@@ -48,39 +48,14 @@ const b_text = document.getElementById('b_text');
 const c_text = document.getElementById('c_text');
 const d_text = document.getElementById('d_text');
 const submitBtn = document.getElementById('submit');
-
-function getSelected() {
-  const answersEl = document.querySelectorAll('.answer');
-  let answer = undefined;
-  answersEl.forEach((answerEl) => {
-    if (answerEl.checked) {
-      answer = answerEl.id;
-    }
-  });
-  return answer;
-}
-
-submitBtn.addEventListener('click', () => {
-  const answer = getSelected();
-
-  if (answer) {
-    if (answer == quizData[currentQuestion].correct) {
-      alert("That's true!");
-      currentQuestion++;
-      if (currentQuestion < quizData.length) {
-        loadQuiz();
-      } else {
-        alert('You finished the quiz!!!');
-      }
-    } else {
-      alert('Try again!');
-    }
-  }
-});
-
-loadQuiz();
-
+const answersEl = document.querySelectorAll('.answer');
+const btnReload = document.getElementById('reload');
+const resultView = document.querySelector('.result');
+const scoreEl = document.getElementById('score');
+let score = 0;
+//initial load function
 function loadQuiz() {
+  deselectAnswers();
   const currentQuizData = quizData[currentQuestion];
 
   questionEl.innerHTML = currentQuizData.question;
@@ -89,3 +64,49 @@ function loadQuiz() {
   c_text.innerHTML = currentQuizData.c;
   d_text.innerHTML = currentQuizData.d;
 }
+// get the selected radio button's id
+function getSelected() {
+  let answer = undefined;
+  answersEl.forEach((answerEl) => {
+    if (answerEl.checked) {
+      answer = answerEl.id;
+    }
+  });
+  return answer;
+}
+btnReload.addEventListener('click', () => {
+  location.reload();
+});
+submitBtn.addEventListener('click', () => {
+  const answer = getSelected();
+
+  if (answer) {
+    if (answer == quizData[currentQuestion].correct) {
+      score += 20;
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuiz();
+      } else {
+        scoreEl.innerHTML = `Your score: ${score}`;
+        resultView.style.display = 'flex';
+      }
+    } else {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuiz();
+      } else {
+        scoreEl.innerHTML = `Your score: ${score}`;
+        resultView.style.display = 'flex';
+      }
+    }
+  }
+});
+//deselecting radio buttons
+function deselectAnswers() {
+  answersEl.forEach((answerEl) => {
+    answerEl.checked = false;
+  });
+}
+
+//initial load
+loadQuiz();

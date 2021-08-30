@@ -57,3 +57,23 @@ button {
 button:hover {
   background-color: #4e46c5;
 }
+
+.result {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  top: 111px;
+  left: 482px;
+  width: 400px;
+  height: 400px;
+  background-color: #d4d8d4;
+  box-shadow: 4px 4px 6px gray;
+  border-radius: 20px;
+  z-index: 5;
+}
+h1 {
+  margin-top: 100px;
+  text-align: center;
+}
